@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TikTok sign-in — Clip Compilations</title>
+<style>
+  body { font-family: -apple-system, system-ui, sans-serif; max-width: 640px; margin: 48px auto; padding: 0 20px; color: #111; line-height: 1.6; }
+  h1 { font-size: 24px; }
+  p { color: #444; }
+  .code { font-family: ui-monospace, monospace; font-size: 18px; word-break: break-all; background: #f4f4f4; border: 1px solid #ddd; border-radius: 8px; padding: 16px; }
+  .error { background: #fdecea; border: 1px solid #f5c6c0; color: #611a15; border-radius: 8px; padding: 16px; word-break: break-word; }
+  button { font-size: 16px; padding: 10px 18px; border-radius: 8px; border: 1px solid #111; background: #111; color: #fff; cursor: pointer; }
+</style>
+</head>
+<body>
+<h1>TikTok sign-in</h1>
+<div id="out"><p>Reading the sign-in result…</p></div>
+<script>
+  var q = new URLSearchParams(window.location.search);
+  var out = document.getElementById('out');
+  var code = q.get('code');
+  var err = q.get('error');
+  if (code) {
+    out.innerHTML = '<p>Sign-in approved. Copy this code and paste it back to Muse:</p>'
+      + '<div class="code" id="code">' + code.replace(/</g, '&lt;') + '</div>'
+      + '<p><button onclick="navigator.clipboard.writeText(document.getElementById(\'code\').textContent); this.textContent=\'Copied!\';">Copy code</button></p>';
+  } else if (err) {
+    var desc = q.get('error_description') || '';
+    out.innerHTML = '<div class="error"><strong>Sign-in failed:</strong> '
+      + err.replace(/</g, '&lt;')
+      + (desc ? '<br>' + desc.replace(/</g, '&lt;') : '') + '</div>'
+      + '<p>Go back and try the sign-in link again, or tell Muse what this page says.</p>';
+  } else {
+    out.innerHTML = '<p>No sign-in code in this link. Open the sign-in link Muse sent you and approve the app — TikTok will bring you back here with the code.</p>';
+  }
+</script>
+</body>
+</html>
